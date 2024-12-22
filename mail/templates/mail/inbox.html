@@ -1,0 +1,57 @@
+{% extends "mail/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="bg-white">
+    <div class="p-2">
+        <h2 class="text-3xl font-medium p-2" id="user-email">{{ request.user.email }}</h2>
+
+        <nav>
+            <button class="btn btn-sm btn-outline-primary" id="inbox">Inbox</button>
+            <button class="btn btn-sm btn-outline-primary" id="compose">Compose</button>
+            <button class="btn btn-sm btn-outline-primary" id="sent">Sent</button>
+            <button class="btn btn-sm btn-outline-primary" id="archived">Archived</button>
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
+        </nav>
+    </div>
+    <hr class="my-2">
+
+    <div id="emails-view" class="grid grid-flow-row auto-rows-max">
+
+    </div>
+
+    <div id="email-view">
+
+    </div>
+
+    <div id="compose-view" class="p-2">
+        <h3 id="compose-title" class="text-xl">New Email</h3>
+        <form id="compose-form" name="mail_submit" href="javascript:void(0)">
+            {% csrf_token %}
+            <div class="form-group">
+                From: <input disabled class="form-control" name="remitent" value="{{ request.user.email }}">
+            </div>
+            <div class="form-group">
+                To: <input required id="compose-recipients" class="form-control" name="destinatary">
+                <div id="tooltip-bottom-compose-recipients" role="tooltip" class="absolute transition-opacity duration-300 opacity-0 z-10 invisible inline-block px-2 py-1 text-xs font-medium text-white bg-gray-600 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                    Separate just with commas all the recipients.
+                </div>
+            </div>
+            <div class="form-group">
+                <input required class="form-control" id="compose-subject" placeholder="Subject" name="subject">
+            </div>
+            <textarea required class="form-control" id="compose-body" placeholder="Body" name="body" class="whitespace-pre-wrap"></textarea>
+            <input type="submit" class="btn btn-primary m-2"/>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'mail/inbox.js' %}"></script>
+    <script src="https://kit.fontawesome.com/29afb26063.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+{% endblock %}
